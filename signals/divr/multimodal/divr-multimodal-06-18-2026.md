@@ -1,8 +1,8 @@
-# huntr-edge-06-15-2026
+# divr-multimodal-06-18-2026
 
-**Title:** New voice & game primitives
-**Date:** 2026-06-15
-**Task:** HUNTR - Edge
+**Title:** Avatar Forcing: Causal Multimodal Sync
+**Date:** 2026-06-18
+**Task:** DIVR - multimodal
 **Conversation ID:** (from task history)
 **Status:** TASK_RESULT_SUCCESS
 

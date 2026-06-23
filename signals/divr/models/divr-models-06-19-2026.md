@@ -1,8 +1,8 @@
-# huntr-edge-06-15-2026
+# divr-models-06-19-2026
 
-**Title:** New voice & game primitives
-**Date:** 2026-06-15
-**Task:** HUNTR - Edge
+**Title:** World models and simulation primitives
+**Date:** 2026-06-19
+**Task:** DIVR - Models
 **Conversation ID:** (from task history)
 **Status:** TASK_RESULT_SUCCESS
 

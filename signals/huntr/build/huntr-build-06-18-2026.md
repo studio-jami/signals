@@ -1,8 +1,8 @@
-# huntr-edge-06-15-2026
+# huntr-build-06-18-2026
 
-**Title:** New voice & game primitives
-**Date:** 2026-06-15
-**Task:** HUNTR - Edge
+**Title:** New avatar & voice primitives
+**Date:** 2026-06-18
+**Task:** HUNTR - Build
 **Conversation ID:** (from task history)
 **Status:** TASK_RESULT_SUCCESS
 
