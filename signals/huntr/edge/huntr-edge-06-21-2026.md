@@ -1,11 +1,27 @@
 # huntr-edge-06-21-2026
 
-**Title:** Moshi full-duplex voice + ACE avatars
-**Date:** 2026-06-21
-**Task:** HUNTR - Edge
-**Conversation ID:** 00e22db1-03c2-4a9e-9694-c8c25f84d78d
-**Status:** TASK_RESULT_SUCCESS
+**HUNTR - Edge** • Moshi full-duplex voice + ACE avatars • June 21, 2026
 
-Full detailed output available in the Grok Tasks app under the Conversation ID above.
+High-signal opportunity in full-duplex voice systems combined with NVIDIA ACE for real-time avatar interaction.
 
-[High-signal real-time voice and avatar primitives. Old-head filter applied.]
+## What It Is
+Moshi provides low-latency, full-duplex voice that feels natural. ACE adds expressive avatar rendering. Together they create a strong primitive for interactive characters.
+
+## Signal vs. Noise Assessment
+Real technical substance with production path. Not just a demo — actual inference optimizations and open components available. Strong building leverage for anyone shipping voice-driven avatars.
+
+## Project Ideas
+- Prototype full-duplex voice avatar using Moshi + ACE
+- Add real-time emotion/expression sync
+- Test end-to-end latency on edge hardware
+
+## Access & Economics
+Open weights and APIs with generous free tiers for prototyping. Clear path to production.
+
+## Risk/Reward
+High upside if you ship first with natural voice interaction. Main risk is integration complexity and staying ahead of rapid open-source movement.
+
+## First Experiment
+Spin up Moshi + ACE demo today and measure voice-to-animation latency.
+
+[Full detailed output and additional primitives from the original HUNTR-Edge task run available in the Grok Tasks app.]
