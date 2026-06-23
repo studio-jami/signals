@@ -1,0 +1,9 @@
+name: Validate Signals
+on: [push]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Check naming
+      run: echo 'TODO: Add name validation script'
