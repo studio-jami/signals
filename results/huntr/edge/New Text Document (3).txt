@@ -1,0 +1,56 @@
+1. Kyutai Moshi (Speech-to-Speech Foundation Model + Mimi Codec)
+What It Is: Open-source full-duplex speech-text foundation model (~7-8B params) that processes and generates speech natively (bypassing cascaded STT/TTS pipelines). Uses Mimi, a state-of-the-art streaming neural audio codec for low-latency, emotionally aware dialogue. Supports real-time multimodal (e.g., MoshiVis for image talk).
+Signal vs. Noise Assessment: First-principles winner—native speech modeling solves latency, prosody loss, and interruption handling that plague pipelines. Code, weights (Moshiko/Moshika voices), and inference (PyTorch/Rust/MLX) released under permissive licenses (Apache 2 / CC BY 4.0). Not a demo; production-grade streaming with proven research backing from Kyutai. High builder leverage for voice/avatar systems.
+Project Ideas:
+
+Weekend prototype: Integrate Moshi into a Unity/Unreal NPC for real-time conversational companion in a mixed-media game (voice cloning + emotional response). Scope: Clone repo, run streaming inference demo, pipe into game audio engine via WebSocket or local server.
+Extend to avatar: Build a real-time talking head pipeline (Moshi + LivePortrait or similar) for dynamic mixed-media storytelling.
+
+Access & Economics: GitHub (kyutai-labs/moshi), HF collections for weights. Fully open-source/self-hostable; managed options exist. No major costs beyond compute.
+Risk/Reward (High Risk Appetite): Moonshot—unlocks truly natural, low-latency voice avatars/agents that feel alive, enabling persistent game NPCs or mixed-media experiences at fraction of pipeline costs. Janky early inference on consumer hardware possible, but community/optimizations (e.g., quantized) will accelerate. Worth it: foundational primitive that compounds across voice/avatar/game dev.
+First Experiment: git clone https://github.com/kyutai-labs/moshi && cd moshi && pip install -r requirements.txt && python -m moshi.demo (or follow HF streaming inference notebook). Test duplex chat today.
+2. DiffusionGemma (Google DeepMind - Block Diffusion for Text Generation)
+What It Is: 26B MoE (A4B active) model using block diffusion (iterative denoising of token blocks) instead of autoregressive next-token. Delivers up to 4x faster inference, especially for parallelizable generation; multimodal (text/image/video) support in variants. HF Transformers integration.
+Signal vs. Noise Assessment: Real primitive shift—diffusion for discrete tokens unlocks speed/parallelism without full MoE bloat. Experimental but with official Google release, GGUF quantizations, and demos (e.g., text-to-3D SVG). Strong efficiency upside for iteration-heavy workflows.
+Project Ideas:
+
+Weekend prototype: Replace autoregressive LLM in a game dev script generator or mixed-media asset pipeline (prompt → code/assets faster). Scope: Load via Transformers, benchmark vs. Gemma baseline on local GPU, integrate into a simple Godot/Unity tool.
+Avatar/voice: Use for rapid dialog/script generation feeding into voice systems.
+
+Access & Economics: HF (google/diffusiongemma-26B-A4B-it and variants). Open weights; run locally or via inference providers. Free to experiment.
+Risk/Reward: Moonshot efficiency gains compound massively in high-iteration domains (game proc-gen, avatar behaviors, ML pipelines). Early jank in quality/stability possible, but 4x speed is immediate leverage. Serious builders bet here for cost/iteration edge.
+First Experiment: Hugging Face notebook or from transformers import DiffusionGemmaForBlockDiffusion... load and generate sample (check model card for exact).
+3. Microsoft FastContext (Repo Explorer Subagent for Coding Agents)
+What It Is: Lightweight (4B+) specialized model + framework for repository exploration in coding agents. Separates search/context gathering from solving; returns concise file:line references. Reduces token use (up to 60%) and boosts resolution rates (~5.5%) on SWE-bench etc.
+Signal vs. Noise Assessment: Principled agentic decomposition—avoids context pollution in large codebases (games/ML projects). Open code/data on GitHub; bootstrapped from strong models with targeted training. High-signal for builder productivity.
+Project Ideas:
+
+Weekend prototype: Integrate into Cursor/Claude/Code agent workflow for a Unity game or ML avatar pipeline repo. Scope: Clone repo, run exploration on your project, feed results to main agent for feature addition (e.g., new voice integration).
+Mixed-media: Accelerate custom shader/asset pipeline dev.
+
+Access & Economics: GitHub (microsoft/fastcontext), HF model. Open-source, free.
+Risk/Reward: Dramatically lowers iteration cost on complex projects; moonshot for solo/high-agency builders shipping games/avatars fast. Small model may need tuning; integration friction possible. Still worth deep dive—efficiency primitives win long-term.
+First Experiment: git clone https://github.com/microsoft/fastcontext && follow setup/reproduction for Mini-SWE-Agent integration or local run on your codebase.
+4. Rosebud AI (Vibe Coding / AI Game Creator)
+What It Is: Prompt-to-playable 3D game/world platform. Natural language → code, assets, logic, physics; instant browser deploy. Evolved for full prototypes (not just assets).
+Signal vs. Noise Assessment: Strong building angle—lowers barrier for rapid mixed-media/game experimentation. Real playable outputs, community jams; janky but iterates fast. Not slop; pragmatic leverage for prototypes.
+Project Ideas:
+
+Weekend prototype: Prompt a simple voice-aware avatar NPC game or mixed-media interactive scene. Scope: Sign up, describe game with voice/avatar hooks, export assets/code for local refinement.
+Extend: Pipe Rosebud outputs into Moshi/Inworld for voiced characters.
+
+Access & Economics: rosebud.ai — free tier + credits; paid for heavier use. Browser-based.
+Risk/Reward: High upside for fast validation/iteration in game dev; could unlock novel avatar/mixed-media experiences. Quality/consistency jank common in AI gen, export limits possible. High risk appetite: prototype velocity justifies.
+First Experiment: Go to rosebud.ai, sign in, prompt a basic scene (e.g., "3D avatar talking in a mixed-media world") and play/export.
+5. Inworld AI Realtime Stack (TTS-2, Runtime, Voice Avatars)
+What It Is: Production realtime voice AI (TTS-2 #1 on arenas, sub-200ms, expressive steering, cloning) + Runtime orchestration for characters/agents. Model-agnostic, scales for games/avatars.
+Signal vs. Noise Assessment: Battle-tested primitives for real-time human-like avatars/NPCs. Price cuts, production case studies (scale, cost reduction). Not hype—deployable infrastructure.
+Project Ideas:
+
+Weekend prototype: Build a simple Unity avatar with realtime voice conversation (Moshi or local LLM + Inworld TTS). Scope: API integration, character config, test in game scene.
+Mixed-media: Persistent voiced storyteller or game companion.
+
+Access & Economics: inworld.ai — free tier/credits, usage-based (competitive post-cuts). SDKs for Unity etc.
+Risk/Reward: Moonshot for immersive voice/avatar systems at scale. Vendor reliance/costs at volume; early preview features. Worth it for leverage in real-time domains—serious builders ship here.
+First Experiment: Sign up at inworld.ai, explore docs/playground for Realtime TTS-2 or Runtime, run a sample character integration.
+These are filtered for technical primitives with building upside. Dive in, prototype ruthlessly—high risk appetite means betting on compounding leverage even if janky today. Track HF daily papers/GitHub for follow-ons.

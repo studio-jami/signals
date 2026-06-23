@@ -1,0 +1,26 @@
+Quiet hour for strict primitives — but a few substantive releases meet the bar.
+Headline: MolmoMotion — Language-Guided 3D Point Trajectory Forecasting
+Source: AllenAI tech report + HF blog + GitHub release (June 17, 2026) — https://allenai.org/papers/molmomotion, https://github.com/allenai/molmo-motion, arXiv:2606.18558 (paper)
+One-sentence signal: A 4B vision-language model that takes RGB frames + query points on an object + natural language action description and directly predicts future 3D point trajectories.
+Technical core: Builds on Molmo vision backbone; outputs dense 3D flow/trajectories via flow-matching action head. Evaluated on PointMotionBench with strong gains over prior (e.g., outperforms baselines on Cosmos Predict, Track2Act metrics). Releases include 1M-scale dataset, models on HF, and full code for robotics/video integration.
+First-principles relevance: Directly advances composition and prediction primitives in mixed-media pipelines and game worlds — enables low-level, controllable 3D motion forecasting from partial observations + language, reducing reliance on full physics sims or hand-authored animations for avatars, object interactions, and real-time procedural content. Improves generalization and efficiency in embodied/spatial reasoning loops critical for voice-avatar systems and game dev.
+Immediate action: git clone https://github.com/allenai/molmo-motion.git; load HF models and test on PointMotionBench; integrate trajectory head into Unity/Unreal or video gen pipelines.
+Headline: SpatialClaw — Code-as-Action Interface for Training-Free Spatial Reasoning Agents
+Source: NVIDIA Research (arXiv + GitHub, ~June 2026) — https://github.com/NVlabs/SpatialClaw, project page, arXiv:2606.13673
+One-sentence signal: VLM agent writes/executes Python cells in a persistent stateful kernel (with perception primitives like Depth Anything 3, SAM 3) for multi-step spatial tasks instead of fixed tool APIs.
+Technical core: Stateful Jupyter kernel + AST safety + LangGraph loop; composes perception (depth, segmentation, geometry) + NumPy/SciPy on-the-fly. Achieves 59.9% avg accuracy across 20 spatial benchmarks (+11.2 pts over prior best), consistent across 6 VLMs, no training or benchmark-specific tuning.
+First-principles relevance: Shifts agentic control primitives from brittle tool-calling to programmable, inspectable, revisable low-level composition — huge for latency-sensitive real-time avatar/spatial systems, game AI, robotics, and mixed-media pipelines where you need dynamic perception-action loops without retraining. Embodies "code is the interface" for verifiable, extensible low-level engineering.
+Immediate action: git clone --recursive https://github.com/NVlabs/SpatialClaw.git && bash spatial_agent/scripts/setup.sh; run benchmarks or prototype in your env with existing VLMs.
+Headline: Beneficial Trait RL — Broad Generalization from Domain-Specific Reinforcement Learning
+Source: OpenAI Alignment Research Blog + PDF (June 18, 2026) — https://alignment.openai.com/beneficial-rl, full paper PDF.
+One-sentence signal: RL on realistic conversational data targeting traits (honesty, corrigibility, epistemic humility, welfare) in one domain (e.g., health) produces broad persistent gains across 44/53 diverse alignment evals.
+Technical core: Small fraction of beneficial data mixed into post-training; realistic scenario RL yields cross-domain transfer, improved resistance to adversarial prompts/harmful fine-tuning, and persistence beyond training distribution.
+First-principles relevance: Touches core control and generalization primitives for production systems — especially safety/steerability in real-time voice/avatar agents and mixed-media pipelines where models interact with users or generate content. Demonstrates scalable alignment mechanisms without full retraining.
+Immediate action: Read PDF; monitor for weights or replication datasets; test trait prompting/RLHF variants in your fine-tuning loops.
+Headline: Grok Imagine Video 1.5 — Image-to-Video Generation (API GA)
+Source: xAI official announcement and API docs (June 16–18, 2026) — https://x.ai/news/grok-imagine-video-1-5, API integration.
+One-sentence signal: Production image-to-video model with improved physics, motion consistency, and speed (720p in ~25s).
+Technical core: Image-conditioned generation (no full text-to-video details released); API endpoint with duration/resolution controls; faster variant rolled out for consumers. No deep architecture paper.
+First-principles relevance: Practical upgrade for mixed-media and avatar pipelines — lower latency for iterative real-time generation/editing in game dev or voice-driven content. Monitor for deeper primitives if code/weights emerge.
+Immediate action: Use xAI SDK/API for quick tests: client.video.generate(model="grok-imagine-video-1.5", image_url=..., prompt=...); integrate into existing media pipelines.
+Other noise (integrations, benchmarks without new primitives, community fine-tunes) filtered out per criteria. Next run in 7 days.

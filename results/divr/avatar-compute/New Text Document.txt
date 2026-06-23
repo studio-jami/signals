@@ -1,0 +1,94 @@
+PersonaPlex (NVIDIA, 2026): Full-duplex speech-to-speech with hybrid role/voice conditioning.
+This stands out as high-leverage for real-time voice/avatar systems. It attacks the core bottlenecks in cascaded pipelines (ASR → LLM → TTS) that destroy natural turn-taking, while extending full-duplex models (like Moshi) with controllable personas—directly relevant to low-latency voice/avatar control, in-game NPCs, and mixed-media pipelines. It has open weights/code, benchmarks, and a clear architecture for integration/experimentation.
+1. The Core Problem (first-principles framing)
+Human conversation is continuous, bidirectional, and multi-modal: we listen while speaking (or planning to), interrupt, backchannel ("uh-huh"), adjust prosody/timing based on the other's state, and maintain consistent identity/role across turns. Fundamental limits:
+
+Cascaded systems: Discrete handoffs introduce irreducible latency (ASR decoding + LLM thinking + TTS generation) and lose paralinguistic cues (emotion, timing, interruptions). The system is half-duplex by design.
+Pure full-duplex models (e.g., early Moshi): Excellent natural dynamics but fixed voice/role—cannot adapt to user-specified personas, voices, or structured tasks (customer service, game characters) without retraining.
+Bottleneck: Joint modeling of semantic reasoning, acoustic generation, and control signals (role + voice identity) under streaming, low-latency constraints while preserving temporal coherence and generalization.
+
+The attack is a single end-to-end model that ingests streaming user audio + control prompts and jointly generates text + audio tokens in a dual-stream setup.
+2. Prior Approaches & Their Failure Modes
+
+Cascaded (ASR+LLM+TTS, e.g., OpenAI Realtime, Gemini Live): High reasoning quality and role control via text prompts, but high latency (hundreds of ms to seconds), poor interruptions/turn-taking, and loss of prosody. Voice cloning often separate/post-hoc. Failure: Pipeline serialization destroys conversational physics.
+Half-duplex speech models: Better acoustics but rely on explicit turn detection; no true simultaneity.
+Early full-duplex (Moshi, dGSLM, etc.): Streaming dual audio channels, natural backchannels/interruptions via joint text/audio token prediction. Failure: Fixed persona; poor role adherence in structured scenarios; limited zero-shot voice control.
+Hybrid commercial: Often bolt role prompts onto cascades—still inherit latency walls.
+
+These hit walls on latency vs. controllability and naturalness vs. task adherence.
+3. The New Primitive / Mechanism
+Hybrid System Prompting in a full-duplex dual-stream Transformer (built on Moshi/Kyutai architecture with Mimi neural codec).
+Ground-up: Audio at 24 kHz tokenized via Mimi (ConvNet + Transformer encoder → discrete RVQ-like codes; decoder reconstructs). Model has separate input channels for user audio, agent text, agent audio. It processes in dual streams (temporal for sequence, depth for hierarchy?) allowing concurrent listen/generate.
+Key innovation: Hybrid Prompt prepends:
+
+Voice prompt segment: Short agent audio sample (clones timbre, style, prosody) on agent audio channel + padding/silence on text.
+Text prompt segment: Role description + context on agent text channel + silence/padding on audio.
+
+This conditions the autoregressive generation of next text + audio tokens jointly. During inference, user audio is live-streamed; agent generates while continuing to listen. For stability, user channel sometimes replaced with sine wave during prompt.
+Pseudocode sketch (inspired by architecture):
+Python# Simplified
+mimi_encoder, mimi_decoder = ...
+temporal_transformer, depth_transformer = ...  # ~7B params total
+
+# Hybrid prompt construction
+voice_tokens = mimi_encoder(voice_sample_audio)
+text_prompt_tokens = tokenizer(role_text)
+hybrid_input = concat(voice_prompt_channel, text_prompt_channel, padding)
+
+# Streaming loop
+while True:
+    user_audio_chunk = mic.read()
+    user_tokens = mimi_encoder(user_audio_chunk)
+    inputs = update_streams(hybrid_input, user_tokens, agent_prev)
+    next_text_tok, next_audio_toks = model(inputs)  # joint prediction
+    agent_audio += mimi_decoder(next_audio_toks)
+    # Stream output, handle interruptions naturally via dual-stream
+Equations: Autoregressive next-token prediction with cross-entropy on text + (downweighted) audio codes. Loss adjustments for imbalance: downweight non-semantic audio tokens (~0.02) and padded text (~0.3).
+4. How It Actually Works (step-by-step data/model flow)
+
+Input Tokenization: User mic → Mimi encoder (streaming). Voice sample → voice prompt tokens. Role text → text prompt tokens.
+Hybrid Prompt Prefill: Concatenate into channels; model prefills internal state (enables zero-shot cloning + role).
+Dual-Stream Inference: Temporal/depth transformers process multi-channel inputs autoregressively. Generates text tokens (for semantics/understanding) and audio tokens jointly. Listens (user channel) while generating (agent channels).
+Streaming Output: Mimi decoder reconstructs audio on-the-fly; text can be extracted for logging/UI.
+Training: Synthetic data (LLM-generated transcripts + TTS audio with prompts) + real conversations (Fisher, back-annotated prompts). Single-stage fine-tune from Moshi base. Mask prompt loss; blend real (naturalness) + synthetic (task adherence).
+
+Full-duplex enables emergent behaviors like backchanneling and barge-in without explicit logic.
+5. Evidence (benchmarks, ablations, comparisons)
+
+Latency: Strong on Full-Duplex-Bench: e.g., low TOR (turn overlap?), interruption latency ~0.4s vs. competitors 1+ s. Voice-to-voice responsive.
+Naturalness (DMOS): 3.90 (Full) / 3.59 (Service) vs. Gemini ~3.7/3.2, Moshi lower.
+Voice Cloning (SSIM): 0.57 vs. near-zero for non-conditioned models.
+Task Adherence: High GPT-4o judge scores on role-specific Service-Duplex-Bench (extension with 350 customer service Qs); outperforms on role adherence.
+Dynamics: Superior smooth turn-taking, user interruption handling, backchannels, pauses. Generalizes to OOD (e.g., spaceship emergency).
+
+7B params; runs real-time with optimizations (CPU offload option).
+6. Relevance & Leverage for Our Domains
+
+Voice/Avatar Systems: Plug-and-play low-latency (< human-noticeable) full-duplex voice with controllable avatars (pair with LLIA-style video or Gaussian avatars). In-game NPCs with persistent persona/voice.
+Mixed-Media Pipelines: Joint text/audio output eases sync with visuals; streaming nature fits real-time generation.
+Programmable Primitives: The hybrid prompt + dual-stream is a new "control primitive" for conditioning streaming generative models. Extend to avatars by conditioning on pose/mesh tokens. Low-level integration via provided code (Moshi fork).
+Game Dev/In-Game: Role prompts for characters; voice cloning for player-specific companions. Verifiable? Not directly, but open weights aid local/decentralized deployment.
+
+High leverage: Moves from "chatbot with delay" to "living agent."
+7. Honest Limitations & Open Questions
+
+Reasoning Depth: Inherits from base LLM; may hallucinate in complex domains despite strong benchmarks. Not frontier-level reasoning.
+Resource: 7B is runnable but inference optimization needed for edge/mobile (CPU offload helps).
+Data Bias: Synthetic heavy for roles; real convos limited. Generalization impressive but not infinite.
+Open Questions: Long-context coherence over hours? Multi-speaker/multi-agent? Integration with visual avatars (joint audio-video tokens)? Scalability to larger backbones? Verifiability of outputs for high-stakes use? Training efficiency for custom fine-tunes.
+
+8. Concrete Experiment Ideas (prototype this week)
+
+Basic Voice Agent: Clone repo, launch server/UI, test hybrid prompts for game NPC (e.g., "You are a grizzled space pirate..."). Measure end-to-end latency with local mic/speakers. Command: Follow GitHub offline eval.
+Avatar Sync Prototype: Pair with open avatar repo (e.g., search LLIA or simple lip-sync like Wav2Lip). Feed PersonaPlex audio output + extracted text to drive facial params. Prototype in Python with Real-time streaming.
+Fine-tune/Custom Role: Use provided synthetic pipeline or Hugging Face; fine-tune on domain data (e.g., in-game dialogues). Test zero-shot voice cloning robustness. Start with --cpu-offload for accessibility.
+
+Repos/Papers: https://github.com/NVIDIA/personaplex (code, weights HF), https://arxiv.org/abs/2602.06053 (paper), https://research.nvidia.com/labs/adlr/personaplex/ (demos).
+Primary Sources (direct links):
+
+Paper: https://arxiv.org/abs/2602.06053 (PDF available)
+Project: https://research.nvidia.com/labs/adlr/personaplex/
+GitHub: https://github.com/NVIDIA/personaplex
+HF: https://huggingface.co/nvidia/personaplex-7b-v1
+
+This is production-viable today with strong fundamentals—integrate aggressively for voice-first systems.

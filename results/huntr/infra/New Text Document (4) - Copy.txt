@@ -1,0 +1,44 @@
+High-agency scout report: Inference and hardware leverage plays for builders (June 2026). As an old-head with high risk appetite, I'm filtering for primitives that slash iteration costs, unlock real-time/low-latency primitives for voice/avatar/game/mixed-media pipelines, or give asymmetric building leverage. Inference economics have collapsed (DeepSeek-style cuts, optimized serving), making high-volume experimentation viable. Hardware/on-device is maturing for edge (games, avatars). I skipped pure hype, consumer slop, or no-code toys. Focus: deployable technical upside with weekend-prototype paths.
+1. FriendliAI Switch/Launch Credits (Inference Optimization Engine)
+What It Is: High-performance LLM serving platform (vLLM roots) with Orca engine for 3x throughput, sub-second latency, traffic-aware autoscaling, and 50-90% cost savings on open models vs. baselines. OpenAI-compatible API.
+Signal vs. Noise Assessment: Real engineering (production reliability 99.99%, partnerships like LG/Twelve Labs) in a post-price-collapse world. Not just another endpoint—focus on serving efficiency that matters for real-time avatar/voice pipelines. Strong first-principles moat in optimization layers.
+Project Ideas: (1) Real-time voice/avatar system: Swap in DeepSeek/Llama variants for low-latency conversational NPCs with mixed-media (lip-sync, emotion). Weekend scope: Hugging Face model + Friendli endpoint + simple WebSocket voice input. (2) Mixed-media pipeline: Batch inference for video frame analysis + generation, leveraging autoscaling for cost control.
+Access & Economics: friendli.ai — up to $10K launch credits for production teams, up to $50K switch credits based on current spend (no heavy commitment). Free tiers/credits available.
+Risk/Reward (High Risk Appetite): Moonshot: 50-90% cheaper scaling unlocks always-on avatar agents or game NPCs that were previously uneconomical. Downside: Migration friction or if their engine doesn't deliver on your specific workload. Worth it—credits de-risk experimentation; builder upside in owning efficient inference stack as costs keep dropping.
+First Experiment: Sign up at friendli.ai/promotions, apply for $10K launch credits (2-min form), deploy a test Llama/DeepSeek endpoint via OpenAI-compatible client, benchmark vs. your current provider.
+2. RunPod Startup Program + Serverless (Flexible GPU Cloud)
+What It Is: On-demand/community cloud GPUs (H100/H200/B200, RTX, etc.) with per-second billing, FlashBoot for sub-200ms cold starts on Serverless, and full Pods for dedicated. Broad hardware selection.
+Signal vs. Noise Assessment: Battle-tested for AI devs (not hype), per-second + community pricing delivers raw leverage on iteration. Serverless FlashBoot addresses real pain in real-time prototypes. Strong builder signal in 2026 GPU abundance plays.
+Project Ideas: (1) Game dev/low-level: Spin H100 Pod for fine-tuning avatar voice models or real-time inference in Unity/Unreal prototypes. Weekend: Launch Pod with pre-built template, run vLLM server for local testing. (2) Mixed-media: Serverless endpoints for on-demand video/audio processing pipelines.
+Access & Economics: runpod.io/startup-program — $1K+ credits for pre-Series A (apply with working product); higher tiers with commitments. Cheap on-demand (H100 ~$2-3/hr range).
+Risk/Reward (High Risk Appetite): Moonshot: Cheap, flexible hardware access accelerates game/avatar prototypes to production without capex. Risk: Spotty availability or management overhead. High reward for builders who ship fast—credits + per-second billing = asymmetric experimentation.
+First Experiment: Apply at runpod.io/startup-program, sign up console, launch a FlashBoot Serverless endpoint or Pod with a simple LLM inference script (e.g., via their templates).
+3. Together AI Startup Accelerator (AI-Native Cloud Inference)
+What It Is: Optimized inference/training on open models (200+), serverless, fine-tuning support, with strong performance on Llama/DeepSeek/Qwen etc.
+Signal vs. Noise Assessment: Deep open-source focus with real optimizations (e.g., cost/throughput wins). Startup program adds engineering/GTM support—legit builder platform vs. generic APIs.
+Project Ideas: (1) Voice/avatar: Fine-tune + deploy custom TTS/LLM chain for real-time characters. Weekend: Use credits for LoRA fine-tune on voice dataset, deploy serverless endpoint. (2) Game dev pipeline: Agentic coding assistance or in-game logic prototyping with fast iteration.
+Access & Economics: together.ai/startup-accelerator — up to $15K-$50K credits by raise stage + eng support. New users get trial credits (~$5-25).
+Risk/Reward (High Risk Appetite): Moonshot: Free-ish credits + optimizations let you run high-volume avatar/game experiments that bankrupt on closed models. Risk: Limits on reserved clusters; competition in open space. Worth serious look—scales with your building velocity.
+First Experiment: Sign up at together.ai, apply to accelerator, grab trial credits, run a quick fine-tune or serverless inference test in their playground/docs.
+4. NVIDIA ACE for Games (On-Device/In-Game Inference Primitives)
+What It Is: Suite for conversational NPCs/avatars with speech (ASR/TTS), intelligence (LLM), animation. Game Agent SDK (C++/UE5 plugins), on-device optimized models, In-Game Inferencing for scheduling alongside graphics.
+Signal vs. Noise Assessment: First-principles hardware-software integration for games/mixed-media. Not demo-ware—plugins + SDK for real engine integration. Timely with edge inference push.
+Project Ideas: (1) AI avatar system: Build responsive in-game companion with voice + animation in UE5. Weekend scope: Download plugins/SDK, integrate basic NPC dialogue/animation in sample project. (2) Mixed-media prototype: Local real-time voice avatar for desktop/game hybrid.
+Access & Economics: developer.nvidia.com/ace-for-games — beta SDK/plugins available (NVIDIA dev account, UE5.3+). Free for developers; leverages existing RTX hardware.
+Risk/Reward (High Risk Appetite): Moonshot: On-device/low-latency NPCs transform game dev and avatar apps (no cloud dependency). Risk: Beta jank, hardware requirements. High upside—proprietary edge in real-time primitives that cloud can't match.
+First Experiment: Go to developer.nvidia.com/ace-for-games, download Game Agent SDK + UE5 plugins, set up sample in Unreal, run basic inference test.
+5. Cerebras Inference (Wafer-Scale Ultra-Fast Primitive)
+What It Is: Wafer-scale chips delivering 1,000-2,600+ tokens/sec on large models (Llama, etc.), OpenAI-compatible API, multimodal support. Extreme low-latency for real-time.
+Signal vs. Noise Assessment: Hardware bet paying off with partnerships (OpenAI, Meta). Qualitative difference in latency-sensitive apps. Serious builder signal for agentic/real-time work.
+Project Ideas: (1) Real-time voice/avatar: Ultra-low TTFT for conversational agents. Weekend: API key, simple chat loop with streaming for voice integration. (2) Game dev: Fast agent reasoning for NPCs or procedural generation.
+Access & Economics: cerebras.ai/inference — generous free tier (up to 1M tokens/day), Developer tier from $10.
+Risk/Reward (High Risk Appetite): Moonshot: Speed unlocks new interaction paradigms (instant avatars, live game AI) others can't. Risk: Pricing at scale, model availability. Early mover advantage huge for prototypes.
+First Experiment: Sign up at cloud.cerebras.ai, get API key, test a high-speed Llama inference call in Python notebook (OpenAI client compatible).
+6. DeepSeek V4 (via Direct/API Providers) + Cheap Inference Routing
+What It Is: Frontier-level open model (reasoning/coding) at collapsed pricing (~10-28x cheaper than closed equivalents on many providers). Available via DeepSeek API, DeepInfra, Fireworks, etc.
+Signal vs. Noise Assessment: Permanent price cuts + strong benchmarks = genuine primitive for high-volume building. Not noise—enables economics that change iteration loops.
+Project Ideas: (1) Avatar/voice pipeline: Power backend reasoning + generation cheaply. Weekend: Route via OpenRouter/DeepInfra, build simple agent loop. (2) Mixed-media/game: Cost-effective fine-tuning or batch for content gen.
+Access & Economics: api.deepseek.com or aggregators (DeepInfra cheapest often). Extremely low per-token (e.g., $0.435/$0.87 range).
+Risk/Reward (High Risk Appetite): Moonshot: Run massive experiments/agents that were prohibitive before. Risk: Rate limits, occasional quality variance. Must-look—fundamentally shifts cost of building.
+First Experiment: Sign up for DeepSeek/DeepInfra API key, run a notebook cell with OpenAI client pointing to their endpoint on a sample avatar prompt.
+These give immediate leverage (credits, cheap/fast inference) and frontier edges (on-device, wafer-scale). Prioritize credits first to de-risk, then ship prototypes. High risk appetite pays here—move fast on the collapsing economics. Track Hugging Face papers for next model drops. Build or get left behind.

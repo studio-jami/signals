@@ -1,1 +1,0 @@
-Full verbatim macro task result: Detailed analysis on current geopolitical signals affecting tech and AI investment, country by country breakdown, probability adjusted scenarios, portfolio hedging strategies, and long-term thesis. Complete paste as ordered.

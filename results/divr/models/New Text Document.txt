@@ -1,0 +1,77 @@
+World models (predictive simulation primitives for dynamics, especially scalable foundation versions like Genie-series or LingBot-World / V-JEPA variants) represent a high-leverage primitive attacking the core bottleneck in real-time interactive AI systems.⁠Deepmind +1
+1. The Core Problem (first-principles framing)
+The fundamental limit is reliable, efficient forward simulation of complex, partially observable, stochastic environments from high-dimensional sensory streams (pixels, audio, actions) without exhaustive enumeration or brittle hand-engineered physics. In games, avatars, voice-driven interactions, or mixed-media pipelines, agents need to predict "what happens if I do X" over horizons, maintain consistency (object permanence, physics-like dynamics, causality), handle long-term memory of off-screen elements, and do so at real-time speeds with controllable actions—all while scaling to open-ended, diverse "worlds" without per-scenario engineering.⁠Taskade
+Transformers (quadratic attention) and pure pixel autoregressive models hit memory/compute walls for long horizons or high-res; reactive policies lack imagination/planning; traditional simulators lack generalization from data. This bottlenecks real-time voice/avatar loops (latency + consistency), in-game NPCs/world sims, and mixed-media generation (coherent audio-visual dynamics).
+2. Prior Approaches & Their Failure Modes
+
+Hand-crafted physics engines / RL simulators (e.g., MuJoCo, Unity/Unreal): Precise but non-generalizable; require expert tuning per domain; poor emergence from raw data; scale poorly to diverse/unseen scenarios.
+Early world models (DreamerV2/3, original World Models 2018): VAE + RNN/MDN for latent dynamics + planning. Strong in narrow domains (Atari, car racing) but collapse on diversity, suffer compounding errors over horizons, limited 3D/physics emergence.⁠Worldmodels.github
+Video diffusion / autoregressive generation (Sora-like, early Genie): Impressive visuals but slow inference (iterative denoising), poor controllability (actions hard to inject precisely), weak long-term consistency/memory (forgets off-screen), high compute. Not real-time playable.⁠Deepmind
+Transformers for sequences (incl. multimodal LLMs): Quadratic scaling kills long contexts/real-time; weak on continuous dynamics without massive data; struggle with precise spatial-temporal physics.
+Pure JEPA-style (early V-JEPA): Excellent for representation/prediction in latent space but initially weaker on full generative controllability and real-time rendering.⁠arXiv
+
+Failure modes: Either too slow/brittle for real-time (diffusion, dense attention), too narrow (classic RL world models), or lacking grounded dynamics (LLM token prediction).
+3. The New Primitive / Mechanism
+Foundation World Models: Scalable architectures (often video tokenizers + autoregressive dynamics in latent space + latent action models) trained on massive unlabeled video + action data to learn a joint distribution over future states and actions. They act as neural physics engines / simulators—generative, controllable, memory-augmented predictors.⁠Deepmind +1
+Key idea (Genie-style): Tokenize video into discrete latents (spatiotemporal VQ-VAE or similar), train autoregressive model on sequences with injected actions (latent actions or adapters), enabling frame-by-frame control. LingBot-World adds MoE diffusion transformer, hierarchical captions, action via camera/keyboard adapters.⁠Facebook
+V-JEPA 2: Self-supervised joint-embedding predictive architecture—predict embeddings of future frames/patches rather than pixels, avoiding pixel-level waste.⁠arXiv
+Pseudocode sketch (simplified dynamics rollout):
+PythonCopy# Latent tokenizer (e.g., ST-VQ)
+z_t = tokenizer.encode(observation_t)  # spatiotemporal tokens
+
+# Dynamics model (autoregressive or SSM-hybrid)
+for step in 1 to horizon:
+    action_latent = action_encoder(a_t)  # or camera/keyboard adapter
+    z_{t+1} = dynamics(z_t, action_latent, context)  # Transformer/MoE/SSM
+    obs_{t+1} = decoder(z_{t+1})  # or diffusion for fidelity
+    z_t = z_{t+1}
+For efficiency: Selective SSMs (Mamba) can hybridize the dynamics backbone for linear-time long contexts.⁠arXiv
+Equations (core SSM/Mamba inspiration for dynamics, selective):
+$$h_t = \overline{A} h_{t-1} + \overline{B} x_t, \quad y_t = C h_t + D x_t$$
+With input-dependent selection (Δ, B, C) for content-aware memory.⁠arXiv
+4. How It Actually Works (step-by-step)
+
+Data: Massive internet video + game logs + synthetic trajectories (Unreal, etc.). Hierarchical captions separate layout/motion. Actions from logs or inferred.
+Tokenization: Spatiotemporal tokenizer compresses frames into discrete latents (efficient discrete space).
+Pretraining: Autoregressive prediction of next tokens conditioned on past + actions (or self-supervised embedding prediction in JEPA). MoE for scaling.
+Action Conditioning: Latent actions or adapters (e.g., camera embeddings + keyboard in LingBot). Freezes visual backbone sometimes for efficiency.
+Inference/Rollout: Seed with image/text → generate controllable video sequence in latent space → decode/render. Distillation (e.g., diffusion forcing, fewer steps) for real-time (16+ FPS reported).
+Planning/Agents: Use as simulator for model-based RL/planning (imagine futures, choose actions). Memory mechanisms for off-screen consistency.⁠Deepmind +1
+
+Hybrid with Mamba for streaming audio-visual (real-time voice/avatar).
+5. Evidence
+
+Genie 2: 3D playable worlds at ~24 FPS from single image; consistent physics, memory of occluded parts; diverse environments. Scaled to foundation level.⁠Taskade +1
+LingBot-World (open-source, ~28B MoE): Leading VBench scores; real-time variants ~16 FPS 480p on 1 GPU node, <1s latency; strong long-horizon consistency, dynamics in games/driving; from web+game+Unreal data.⁠arXiv +1
+V-JEPA 2: SOTA on motion understanding (77.3% SSv2), action anticipation; zero-shot robot planning (80%+ success) from <62h robot data post web-scale pretrain (1M+ hrs video). Efficient latent prediction.⁠arXiv
+Ablations often show action-conditioning and latent prediction beat pixel-reconstruction baselines on consistency/long-horizon.
+
+Mamba integrations show strong audio/streaming gains (e.g., DuplexMamba, streaming TTS).⁠arXiv
+6. Relevance & Leverage for Our Domains
+Huge. For real-time voice/avatar: Integrate as dynamics backbone—audio drives latent actions for consistent full-body animation, lip-sync, expressions (NVIDIA Audio2Face + world model rollout). Low-latency inference enables live interactions.⁠Nvidia
+In-game systems: Neural game engines—generate infinite playable levels/NPCs from prompts; sim for training agents; mixed-media (voice + visuals consistent). LingBot explicitly targets games/driving/embodied.⁠Facebook
+Mixed-media generation: Coherent audio-visual worlds; efficient inference via SSM hybrids or distilled diffusion.
+Low-level primitives: World models as composable sim primitives; combine with Mamba for efficient long-context streaming. Enables programmable "what if" simulation in pipelines. High risk/appetite payoff: shifts from scripted to emergent, data-driven worlds.
+7. Honest Limitations & Open Questions
+
+Compute/Real-time: Still GPU-heavy for highest fidelity; distillation helps but quality-speed tradeoffs remain. Not yet consumer-edge ubiquitous.
+Compounding Errors: Long horizons degrade (physics hallucinations, drift).
+Data Bias/Generalization: Relies on training distributions; rare events/physics edge cases weak.
+Controllability/Editing: Action injection improving but precise fine-grained control (e.g., specific object interactions) not perfect.
+Evaluation: Hard to quantify "true" world understanding vs. memorization.
+Open: Best hybrid (diffusion + SSM + JEPA)? Scaling laws for world models? Integration with LLMs for high-level planning? Safety/alignment in open sims.
+
+8. Concrete Experiment Ideas (prototype this week)
+
+LingBot-World Quickstart + Avatar Hook: Clone https://github.com/robbyant/lingbot-world. Run base model inference from image seed + simple action sequence (keyboard sim). Hook audio input (e.g., via Cartesia Sonic or local TTS) to drive latent actions for avatar animation. Command: pip install -r requirements.txt; python inference.py --seed_image .... Extend with Mamba for audio stream. Measure FPS/latency/consistency.⁠GitHub
+V-JEPA 2 + Simple Planning: Pull Meta V-JEPA 2 weights/code. Fine-tune latent action model on small robot/game dataset (or synthetic). Use for rollout-based policy in a gym-like env (e.g., MiniWoB or custom Unity export). Prototype zero-shot pick-place sim. Paper: arxiv.org/abs/2506.09985.⁠arXiv
+Mamba-Audio + World Model Hybrid: Use Mamba SSM for streaming audio-to-action (e.g., adapt DuplexMamba or SaShiMi). Feed to lightweight world model decoder for synced avatar visuals. Start with HuggingFace Mamba audio examples + simple diffusion head. Benchmark real-time latency on consumer GPU.
+
+9. Primary Sources
+
+Genie 2: https://deepmind.google/blog/genie-2-a-large-scale-foundation-world-model/ (and arXiv equivalents).⁠Deepmind
+LingBot-World: https://arxiv.org/abs/2601.20540 ; https://github.com/robbyant/lingbot-world ; project page.⁠arXiv
+V-JEPA 2: https://arxiv.org/abs/2506.09985 ; https://ai.meta.com/research/vjepa/.⁠arXiv
+Mamba: https://arxiv.org/abs/2312.00752.⁠arXiv
+
+This has strong meat for integration—prioritize open-source like LingBot for rapid prototyping while monitoring scaling in closed labs. High upside for builder workflows.

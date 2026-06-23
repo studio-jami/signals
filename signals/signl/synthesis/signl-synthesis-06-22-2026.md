@@ -1,1 +1,0 @@
-FULL VERBATIM SIGNL SYNTHESIS TASK RESULT PASTED IN FULL: [All synthesis points, morning/evening signals, cross-references to DIVR and HUNTR, full actionable list for the team - complete copy].

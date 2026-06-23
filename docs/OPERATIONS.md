@@ -1,6 +1,7 @@
 # Operations
 
 **Signal Pipeline Workflow**
+
 1. Generate raw task output
 2. Categorize by `type` (divr, macro, quant...)
 3. Assign `category` (models, analysis, alerts...)
