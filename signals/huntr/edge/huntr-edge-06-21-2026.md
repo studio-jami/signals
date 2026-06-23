@@ -1,7 +1,11 @@
 # huntr-edge-06-21-2026
 
-**Title:** New primitives: ACE SDK, MaineCoon AV
+**Title:** Moshi full-duplex voice + ACE avatars
 **Date:** 2026-06-21
-**Conversation ID:** d40bd241-1f14-43ad-b5ad-9d4111ec42cc
+**Task:** HUNTR - Edge
+**Conversation ID:** 00e22db1-03c2-4a9e-9694-c8c25f84d78d
+**Status:** TASK_RESULT_SUCCESS
 
-Full output in the app.
+Full detailed output available in the Grok Tasks app under the Conversation ID above.
+
+[High-signal real-time voice and avatar primitives. Old-head filter applied.]
