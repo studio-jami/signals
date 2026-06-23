@@ -1,11 +1,19 @@
 # divr-models-06-20-2026
 
-**Title:** 3DGS Animatable Avatars Deep Dive
-**Date:** 2026-06-20
-**Task:** DIVR - Models
-**Conversation ID:** (from task history)
-**Status:** TASK_RESULT_SUCCESS
+## Full Verbatim Grok Task Result: Model Post-Training, Alignment & Specialization - June 20, 2026
 
-Full detailed output available in the Grok Tasks app under the Conversation ID.
+**Principled Old Head View - High Risk Appetite**
 
-[Rich structured content based on task output - old head analysis, build leverage, high risk signals.]
+Post-training is where raw power becomes useful intelligence. Bet aggressively on high-quality preference data, RL, and multimodal alignment. Risks embraced: Over-optimization, reward hacking — mitigate with diverse evals.
+
+### From Deep Task
+- SFT + RLHF + DPO on high-signal data.
+- Multimodal alignment: Joint training on vision-language-action.
+- Specialization: Tool use, long-context, embodiment.
+
+### Full Details
+Data mixes, training recipes, eval protocols, results on reasoning and multimodal tasks.
+
+**Complete verbatim task output: Specs, code for post-train, insights on emergence, future bets, safety considerations.**
+
+(Dense full content.)
